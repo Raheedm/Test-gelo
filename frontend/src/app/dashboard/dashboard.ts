@@ -21,7 +21,7 @@ L.Icon.Default.mergeOptions({
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.html',
-  styleUrls: ['./dashboard.css', './dashboard-markers.css']
+  styleUrls: ['./dashboard-base.css', './dashboard.css', './dashboard-markers.css']
 })
 export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('mapContainer', { static: false }) mapContainer!: ElementRef;
