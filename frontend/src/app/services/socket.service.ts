@@ -33,6 +33,7 @@ export class SocketService {
   }
 
   connect(user: any): void {
+    console.log('Connecting socket for user:', user.username);
     this.socket.emit('user-online', {
       userId: user.id,
       username: user.username,
@@ -41,6 +42,7 @@ export class SocketService {
   }
 
   updateLocation(latitude: number, longitude: number): void {
+    console.log('Updating location via socket:', { latitude, longitude });
     this.socket.emit('location-update', { latitude, longitude });
   }
 

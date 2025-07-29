@@ -53,6 +53,14 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
   ngOnInit(): void {
     this.subscriptions.push(
       this.authService.currentUser$.subscribe(user => {
+        console.log('Dashboard received user change:', user?.username);
+        
+        // Clear previous user data when switching users
+        if (this.currentUser && user && this.currentUser.id !== user.id) {
+          console.log('Different user detected, clearing data');
+          this.clearUserData();
+        }
+        
         this.currentUser = user;
         if (user) {
           this.socketService.connect(user);
@@ -60,14 +68,30 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       })
     );
 
-    // Comment out Socket.IO nearby users subscription to prevent clearing
-    // this.subscriptions.push(
-    //   this.socketService.nearbyUsers$.subscribe(users => {
-    //     this.nearbyUsers = users;
-    //     this.lastUpdated = new Date();
-    //     this.updateNearbyUserMarkers();
-    //   })
-    // );
+    // Subscribe to Socket.IO nearby users updates
+    this.subscriptions.push(
+      this.socketService.nearbyUsers$.subscribe(users => {
+        console.log('Received nearby users from socket for:', this.currentUser?.username, users);
+        this.nearbyUsers = users;
+        this.lastUpdated = new Date();
+        this.updateNearbyUserMarkers();
+      })
+    );
+  }
+
+  private clearUserData(): void {
+    this.nearbyUsers = [];
+    this.currentLocation = null;
+    this.locationPermissionGranted = false;
+    this.lastUpdated = null;
+    
+    // Clear map markers
+    if (this.currentUserMarker) {
+      this.map?.removeLayer(this.currentUserMarker);
+      this.currentUserMarker = null;
+    }
+    this.nearbyUserMarkers.forEach(marker => this.map?.removeLayer(marker));
+    this.nearbyUserMarkers = [];
   }
 
   ngAfterViewInit(): void {
@@ -136,21 +160,15 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.isScanning = true;
-    console.log('Detecting nearby users at:', this.currentLocation);
+    console.log('Detecting nearby users at:', this.currentLocation, 'for user:', this.currentUser?.username);
 
     this.locationService.getNearbyUsers(this.currentLocation)
       .subscribe({
         next: (users) => {
-          console.log('Found nearby users:', users);
-          // Only update if we actually got users
-          if (users && users.length > 0) {
-            this.nearbyUsers = users;
-            this.lastUpdated = new Date();
-            this.updateNearbyUserMarkers();
-            console.log('Updated nearby users:', this.nearbyUsers);
-          } else {
-            console.log('No users found, keeping existing users');
-          }
+          console.log('Found nearby users:', users, 'for user:', this.currentUser?.username);
+          this.nearbyUsers = users;
+          this.lastUpdated = new Date();
+          this.updateNearbyUserMarkers();
           this.isScanning = false;
         },
         error: (error) => {
@@ -172,14 +190,14 @@ export class DashboardComponent implements OnInit, OnDestroy, AfterViewInit {
       try {
         const location = await this.locationService.getCurrentPosition();
         this.currentLocation = location;
+        console.log('Updating location for user:', this.currentUser?.username, location);
         this.socketService.updateLocation(location.latitude, location.longitude);
         this.locationService.updateLocation(location).subscribe();
         this.updateCurrentUserMarker();
-        // Don't automatically refresh nearby users - let user control this
       } catch (error) {
         console.error('Failed to update location:', error);
       }
-    }, 10000); // Increased interval to 10 seconds
+    }, 5000); // Reduced to 5 seconds for better testing
   }
 
   private initializeMap(): void {

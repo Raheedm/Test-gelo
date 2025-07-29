@@ -18,7 +18,7 @@
         </svg>
         <span class="notification-dot"></span>
       </button>
-      <div class="profile-avatar" (click)="logout()">
+      <div class="profile-avatar" (click)="logout()" [title]="'Logged in as: ' + (currentUser?.username || 'Unknown')">
         {{ currentUser?.name?.charAt(0) || 'U' }}
       </div>
     </div>

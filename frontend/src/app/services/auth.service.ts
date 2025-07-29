@@ -26,9 +26,16 @@ export class AuthService {
 
   constructor(private http: HttpClient) {
     const token = localStorage.getItem('token');
+    console.log('AuthService initialized with token:', token ? 'exists' : 'none');
     if (token) {
       // Validate token and get user info
-      this.getProfile().subscribe();
+      this.getProfile().subscribe({
+        next: (user) => console.log('Auto-loaded user profile:', user.username),
+        error: (err) => {
+          console.error('Failed to auto-load profile:', err);
+          this.logout(); // Clear invalid token
+        }
+      });
     }
   }
 
@@ -36,6 +43,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, { username, password })
       .pipe(
         tap(response => {
+          console.log('Login successful for user:', response.user.username);
           localStorage.setItem('token', response.token);
           this.currentUserSubject.next(response.user);
         })
@@ -53,6 +61,7 @@ export class AuthService {
   }
 
   logout(): void {
+    console.log('Logging out user');
     localStorage.removeItem('token');
     this.currentUserSubject.next(null);
   }

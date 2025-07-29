@@ -103,9 +103,11 @@ export class LocationService {
       // Simulate Bluetooth scan delay
       setTimeout(() => {
         const mockDevices = [
-          { name: 'John\'s iPhone', address: '00:11:22:33:44:55' },
+          { name: 'Alex\'s iPhone', address: '00:11:22:33:44:55' },
           { name: 'Sarah\'s Android', address: '00:11:22:33:44:56' },
-          { name: 'Mike\'s Laptop', address: '00:11:22:33:44:57' }
+          { name: 'Mike\'s Laptop', address: '00:11:22:33:44:57' },
+          { name: 'Emma\'s MacBook', address: '00:11:22:33:44:58' },
+          { name: 'David\'s Phone', address: '00:11:22:33:44:59' }
         ];
         resolve(mockDevices);
       }, 2000);
