@@ -1,0 +1,64 @@
+<div class="login-container">
+  <div class="login-card">
+    <h2>{{ isLoginMode ? 'Login' : 'Register' }}</h2>
+
+
+    <form (ngSubmit)="onSubmit()" #form="ngForm">
+      <div class="form-group" *ngIf="isLoginMode">
+        <label for="username">Username</label>
+        <input type="text" id="username" [(ngModel)]="loginData.username" name="username" required class="form-control">
+      </div>
+
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="reg-username">Username</label>
+        <input type="text" id="reg-username" [(ngModel)]="registerData.username" name="reg-username" required
+          class="form-control">
+      </div>
+
+      <div class="form-group" *ngIf="isLoginMode">
+        <label for="password">Password</label>
+        <input type="password" id="password" [(ngModel)]="loginData.password" name="password" required
+          class="form-control">
+      </div>
+
+      <div class="form-group" *ngIf="!isLoginMode">
+        <label for="reg-password">Password</label>
+        <input type="password" id="reg-password" [(ngModel)]="registerData.password" name="reg-password" required
+          class="form-control">
+      </div>
+
+      <div *ngIf="!isLoginMode">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" [(ngModel)]="registerData.name" name="name" required class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="contact">Contact</label>
+          <input type="text" id="contact" [(ngModel)]="registerData.contact" name="contact" required
+            class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label for="bio">Bio</label>
+          <textarea id="bio" [(ngModel)]="registerData.bio" name="bio" rows="3" class="form-control"
+            placeholder="Tell us about yourself..."></textarea>
+        </div>
+      </div>
+
+      <div class="error" *ngIf="error">{{ error }}</div>
+
+      <button type="submit" [disabled]="loading" class="btn btn-primary">
+        {{ loading ? 'Please wait...' : (isLoginMode ? 'Login' : 'Register') }}
+      </button>
+    </form>
+
+    <div class="toggle-mode" style="text-align: center; margin-top: 16px;">
+      <p>{{ isLoginMode ? "Don't have an account?" : "Already have an account?" }}</p>
+      <button type="button" (click)="toggleMode()" class="btn btn-secondary"
+        style="background: #6c757d; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+        {{ isLoginMode ? 'Register' : 'Login' }}
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,141 @@
+/* Enhanced Map User Indicators */
+.map-user-indicator {
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.map-user-indicator:hover {
+  transform: scale(1.1);
+}
+
+/* User Avatar - Enhanced Circular Profile Icons */
+.user-avatar {
+  position: relative;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15), 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  z-index: 2;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.map-user-indicator.current-user .user-avatar {
+  width: 42px;
+  height: 42px;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 50%, #ff4757 100%);
+  border: 4px solid white;
+  box-shadow: 0 8px 25px rgba(255, 71, 87, 0.4), 0 3px 10px rgba(255, 71, 87, 0.2);
+}
+
+.map-user-indicator.nearby-user .user-avatar {
+  width: 36px;
+  height: 36px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #5a67d8 100%);
+  border: 3px solid white;
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3), 0 2px 8px rgba(102, 126, 234, 0.15);
+}
+
+.avatar-inner {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 15px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.map-user-indicator.current-user .avatar-inner {
+  font-size: 17px;
+}
+
+/* Hover effects for better interactivity */
+.map-user-indicator:hover .user-avatar {
+  transform: scale(1.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2), 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.map-user-indicator.current-user:hover .user-avatar {
+  box-shadow: 0 10px 35px rgba(255, 71, 87, 0.5), 0 4px 15px rgba(255, 71, 87, 0.3);
+}
+
+.map-user-indicator.nearby-user:hover .user-avatar {
+  box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4), 0 4px 12px rgba(102, 126, 234, 0.2);
+}
+
+/* Pulsing Animation for Current User */
+.user-pulse {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: rgba(255, 71, 87, 0.3);
+  animation: pulse 2s infinite;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translate(-50%, -50%) scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Status Dot - Enhanced with subtle animation */
+.user-status-dot {
+  position: absolute;
+  bottom: 1px;
+  right: 1px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 3px solid white;
+  z-index: 3;
+  transition: all 0.3s ease;
+}
+
+.map-user-indicator.current-user .user-status-dot {
+  background: #2ed573;
+  box-shadow: 0 0 0 2px rgba(46, 213, 115, 0.4), 0 2px 8px rgba(46, 213, 115, 0.3);
+  animation: statusPulse 2s infinite ease-in-out;
+}
+
+.map-user-indicator.nearby-user .user-status-dot {
+  background: #ffa502;
+  box-shadow: 0 0 0 2px rgba(255, 165, 2, 0.4), 0 2px 8px rgba(255, 165, 2, 0.3);
+}
+
+/* Subtle pulsing animation for current user status */
+@keyframes statusPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.1);
+    opacity: 0.8;
+  }
+}
+
+/* Marker Container Cleanup */
+.current-user-marker,
+.nearby-user-marker {
+  background: transparent !important;
+  border: none !important;
+}
