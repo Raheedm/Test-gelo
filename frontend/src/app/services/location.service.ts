@@ -20,7 +20,7 @@ export interface NearbyUser {
   providedIn: 'root'
 })
 export class LocationService {
-  private apiUrl = 'http://localhost:3000/api';
+  private apiUrl = 'http://13.48.10.255:3000/api';
   private currentLocationSubject = new BehaviorSubject<Location | null>(null);
   public currentLocation$ = this.currentLocationSubject.asObservable();
 

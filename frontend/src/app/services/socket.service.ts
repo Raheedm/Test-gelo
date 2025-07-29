@@ -13,7 +13,7 @@ export class SocketService {
   public nearbyUsers$ = this.nearbyUsersSubject.asObservable();
 
   constructor(private authService: AuthService) {
-    this.socket = io('http://localhost:3000');
+    this.socket = io('http://13.48.10.255:3000');
     this.setupSocketListeners();
   }
 

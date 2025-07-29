@@ -13,14 +13,14 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:4200",
+    origin: ["http://13.48.10.255", "http://13.48.10.255:80", "http://localhost:4200"],
     methods: ["GET", "POST"]
   }
 });
 
 // Middleware
 app.use(cors({
-  origin: ["http://localhost:4200", "http://127.0.0.1:4200"],
+  origin: ["http://13.48.10.255", "http://13.48.10.255:80", "http://localhost:4200", "http://127.0.0.1:4200"],
   credentials: true
 }));
 app.use(express.json());
