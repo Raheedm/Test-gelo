@@ -20,7 +20,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://13.48.10.255:3000/api';
+  private apiUrl = 'https://13-48-10-255.sslip.io/api';
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
 

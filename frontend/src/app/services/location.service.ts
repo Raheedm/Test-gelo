@@ -20,7 +20,7 @@ export interface NearbyUser {
   providedIn: 'root'
 })
 export class LocationService {
-  private apiUrl = 'http://13.48.10.255:3000/api';
+  private apiUrl = 'https://13-48-10-255.sslip.io/api';
   private currentLocationSubject = new BehaviorSubject<Location | null>(null);
   public currentLocation$ = this.currentLocationSubject.asObservable();
 
