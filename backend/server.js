@@ -43,7 +43,7 @@ app.use('/api/location', locationRoutes);
 
 // Root route for testing
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'Find People Near You API Server',
     status: 'running',
     endpoints: {
@@ -86,7 +86,7 @@ io.on('connection', (socket) => {
       user.latitude = locationData.latitude;
       user.longitude = locationData.longitude;
       user.lastSeen = new Date();
-      
+
       // Broadcast to nearby users
       broadcastToNearbyUsers(user, locationData);
     }
@@ -100,11 +100,11 @@ io.on('connection', (socket) => {
 
 function broadcastToNearbyUsers(currentUser, locationData) {
   console.log(`Broadcasting nearby users for ${currentUser.username}`);
-  
+
   // Send nearby users to ALL active users, not just the one who moved
   activeUsers.forEach((targetUser, targetSocketId) => {
     const nearbyUsers = [];
-    
+
     // Find users near this target user
     activeUsers.forEach((otherUser, otherSocketId) => {
       if (targetSocketId !== otherSocketId && otherUser.latitude && otherUser.longitude) {
@@ -114,7 +114,7 @@ function broadcastToNearbyUsers(currentUser, locationData) {
           otherUser.latitude,
           otherUser.longitude
         );
-        
+
         if (distance <= 50) { // 50 meters radius
           nearbyUsers.push({
             username: otherUser.username,
@@ -125,7 +125,7 @@ function broadcastToNearbyUsers(currentUser, locationData) {
         }
       }
     });
-    
+
     console.log(`Sending ${nearbyUsers.length} nearby users to ${targetUser.username}`);
     io.to(targetSocketId).emit('nearby-users', nearbyUsers);
   });
@@ -135,10 +135,10 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   const R = 6371000; // Earth's radius in meters
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+  const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-    Math.sin(dLon/2) * Math.sin(dLon/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
 
