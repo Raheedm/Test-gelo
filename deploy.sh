@@ -2,12 +2,11 @@
 
 echo "🚀 Building Find People Near You for Production..."
 
-# Clean previous builds
 echo "🧹 Cleaning previous builds..."
 rm -rf dist
 rm -rf frontend/dist
 
-# Build frontend for production
+
 echo "📦 Building Angular frontend for production..."
 cd frontend
 npm install
@@ -17,23 +16,20 @@ ls -la dist/ 2>/dev/null || echo "No dist directory found"
 find dist -name "*.html" -o -name "*.js" -o -name "*.css" 2>/dev/null | head -5
 cd ..
 
-# Prepare backend
 echo "📦 Preparing backend..."
 cd backend
 npm install --production
 cd ..
 
-# Create deployment package
 echo "📦 Creating deployment package..."
 mkdir -p dist
 mkdir -p dist/public
 
-# Copy backend files
+
 cp -r backend/* dist/
 rm -rf dist/node_modules
 cp -r backend/node_modules dist/
 
-# Copy frontend build (Angular 17+ uses dist/frontend/browser)
 if [ -d "frontend/dist/frontend/browser" ]; then
     echo "📁 Copying from dist/frontend/browser..."
     cp -r frontend/dist/frontend/browser/* dist/public/
